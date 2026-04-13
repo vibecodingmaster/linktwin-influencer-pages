@@ -56,15 +56,7 @@
   status = 200
 
 # Yuki Kimura - Page 2/50
-[[redirects]]
-  from = "/yuki.kimura.japan"
-  to = "/02_yuki.kimura.japan/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/yuki.kimura.japan/*"
-  to = "/02_yuki.kimura.japan/:splat"
-  status = 200
+# No redirects needed - folder name matches URL path
 
 # Add more influencer routes here as you create them
 # Example for next influencer:
