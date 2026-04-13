@@ -55,11 +55,22 @@
   to = "/zoe.novak.ga/:splat"
   status = 200
 
+# Yuki Kimura - Page 2/50
+[[redirects]]
+  from = "/yuki.kimura.japan"
+  to = "/02_yuki.kimura.japan/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/yuki.kimura.japan/*"
+  to = "/02_yuki.kimura.japan/:splat"
+  status = 200
+
 # Add more influencer routes here as you create them
 # Example for next influencer:
 # [[redirects]]
-#   from = "/influencer2.name"
-#   to = "/influencer2.name/index.html"
+#   from = "/influencer3.name"
+#   to = "/influencer3.name/index.html"
 #   status = 200
 
 # Fallback - redirect root to first influencer or landing page
