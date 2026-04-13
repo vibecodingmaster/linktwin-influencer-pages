@@ -2,6 +2,16 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/yuki.kimura.japan",
+      "destination": "/02_yuki.kimura.japan/index.html"
+    },
+    {
+      "source": "/yuki.kimura.japan/:path*",
+      "destination": "/02_yuki.kimura.japan/:path*"
+    }
+  ],
   "redirects": [
     {
       "source": "/",
