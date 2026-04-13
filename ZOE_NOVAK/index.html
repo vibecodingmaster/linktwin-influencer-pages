@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoe Novak | Links</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Connect with Zoe Novak - Your gateway to exclusive content and conversations">
+    <meta name="keywords" content="Zoe Novak, social media, links">
+    <meta name="author" content="Zoe Novak">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="http://gramflow.link/zoe.novak.ga">
+    <meta property="og:title" content="Zoe Novak | Links">
+    <meta property="og:description" content="Connect with Zoe Novak - Your gateway to exclusive content and conversations">
+    <meta property="og:image" content="http://gramflow.link/assets/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="http://gramflow.link/zoe.novak.ga">
+    <meta property="twitter:title" content="Zoe Novak | Links">
+    <meta property="twitter:description" content="Connect with Zoe Novak - Your gateway to exclusive content and conversations">
+    <meta property="twitter:image" content="http://gramflow.link/assets/og-image.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- Preload critical assets -->
+    <link rel="preload" as="image" href="assets/profile.jpg">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Instagram Deep Link Script - CRITICAL: Must be in head -->
+    <script>
+        // Detect Instagram in-app browser and force external browser
+        (function() {
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            var isInstagram = (ua.indexOf('Instagram') > -1);
+            var isFacebook = (ua.indexOf('FBAN') > -1 || ua.indexOf('FBAV') > -1);
+            var isInAppBrowser = isInstagram || isFacebook;
+
+            if (isInAppBrowser) {
+                // Store original destination
+                sessionStorage.setItem('deeplink_redirect', window.location.href);
+
+                // Create intent URL to force external browser
+                var currentUrl = window.location.href;
+
+                // For Android
+                if (/android/i.test(ua)) {
+                    window.location.href = 'intent://' + currentUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end';
+                }
+                // For iOS - show modal instruction
+                else if (/iPad|iPhone|iPod/.test(ua)) {
+                    document.addEventListener('DOMContentLoaded', function() {
+                        showDeeplinkModal();
+                    });
+                }
+            }
+        })();
+
+        function showDeeplinkModal() {
+            var modal = document.createElement('div');
+            modal.className = 'deeplink-modal';
+            modal.innerHTML = `
+                <div class="deeplink-content">
+                    <h2>Open in Browser</h2>
+                    <p>For the best experience, please open this link in your default browser:</p>
+                    <ol>
+                        <li>Tap the <strong>three dots (•••)</strong> in the bottom right</li>
+                        <li>Select <strong>"Open in Safari"</strong> or <strong>"Open in Browser"</strong></li>
+                    </ol>
+                    <button onclick="this.parentElement.parentElement.remove()">Continue Anyway</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+    </script>
+</head>
+<body>
+    <!-- Deeplink Modal (iOS) -->
+    <div id="deeplinkModal" class="modal" style="display: none;">
+        <div class="modal-content deeplink-content">
+            <h2>📱 Open in Browser</h2>
+            <p>For the best experience, please open this page in Safari:</p>
+            <div class="instructions">
+                <ol>
+                    <li>Tap the <strong>three dots (•••)</strong> menu</li>
+                    <li>Select <strong>"Open in Safari"</strong></li>
+                </ol>
+            </div>
+            <button onclick="closeDeeplinkModal()" class="btn-secondary">Continue Here</button>
+        </div>
+    </div>
+
+    <!-- Age Verification Modal -->
+    <div id="ageModal" class="modal" style="display: none;">
+        <div class="modal-content age-verification">
+            <h2>🔞 Age Verification</h2>
+            <p>You must be 18 years or older to access this content.</p>
+            <p class="age-question">Are you 18 years of age or older?</p>
+            <div class="age-buttons">
+                <button onclick="verifyAge(true)" class="btn-yes">Yes, I'm 18+</button>
+                <button onclick="verifyAge(false)" class="btn-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Profile Section -->
+        <div class="profile-header">
+            <img src="assets/profile.jpg" alt="Zoe Novak" class="profile-image">
+            <h1 class="profile-name">Zoe Novak</h1>
+            <p class="profile-handle">@zoe.novak.ga</p>
+            <p class="profile-bio">✨ Model & Content Creator<br>💫 Living life on my terms</p>
+        </div>
+
+        <!-- Links Section -->
+        <div class="links-container">
+            <!-- Social Media Links -->
+            <a href="https://instagram.com/zoe.novak.ga" target="_blank" rel="noopener noreferrer" class="link-button social-link instagram">
+                <span class="link-icon">📷</span>
+                <span class="link-text">Follow on Instagram</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://tiktok.com/@zoe.novak.ga" target="_blank" rel="noopener noreferrer" class="link-button social-link tiktok">
+                <span class="link-icon">🎵</span>
+                <span class="link-text">Watch on TikTok</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <!-- Private Conversations Link with Age Gate -->
+            <a href="#" onclick="showAgeVerification(); return false;" class="link-button private-link">
+                <span class="link-icon">💌</span>
+                <span class="link-text">Private Conversations Here</span>
+                <span class="link-badge">18+</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <!-- Additional Links -->
+            <a href="https://youtube.com/@zoenovak" target="_blank" rel="noopener noreferrer" class="link-button social-link youtube">
+                <span class="link-icon">▶️</span>
+                <span class="link-text">YouTube Channel</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://twitter.com/zoenovak" target="_blank" rel="noopener noreferrer" class="link-button social-link twitter">
+                <span class="link-icon">🐦</span>
+                <span class="link-text">Follow on Twitter</span>
+                <span class="link-arrow">→</span>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Powered by GramFlow</p>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy</a>
+                <span>•</span>
+                <a href="terms.html">Terms</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+
+    <!-- Analytics (Add your tracking codes here) -->
+    <script>
+        // Facebook Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+
+        // Replace with your Facebook Pixel ID
+        // fbq('init', 'YOUR_PIXEL_ID');
+        // fbq('track', 'PageView');
+    </script>
+</body>
+</html>

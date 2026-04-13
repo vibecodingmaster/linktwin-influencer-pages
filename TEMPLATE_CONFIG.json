@@ -1,0 +1,91 @@
+{
+  "influencer": {
+    "name": "{{INFLUENCER_NAME}}",
+    "handle": "{{INFLUENCER_HANDLE}}",
+    "bio": "{{INFLUENCER_BIO}}",
+    "subdomain": "{{SUBDOMAIN}}",
+    "profileImage": "{{PROFILE_IMAGE_FILENAME}}",
+    "ageRestricted": false
+  },
+  "links": [
+    {
+      "type": "instagram",
+      "url": "https://instagram.com/{{INSTAGRAM_USERNAME}}",
+      "title": "Follow on Instagram",
+      "icon": "📷",
+      "enabled": true
+    },
+    {
+      "type": "tiktok",
+      "url": "https://tiktok.com/@{{TIKTOK_USERNAME}}",
+      "title": "Watch on TikTok",
+      "icon": "🎵",
+      "enabled": true
+    },
+    {
+      "type": "youtube",
+      "url": "https://youtube.com/@{{YOUTUBE_HANDLE}}",
+      "title": "YouTube Channel",
+      "icon": "▶️",
+      "enabled": false
+    },
+    {
+      "type": "twitter",
+      "url": "https://twitter.com/{{TWITTER_HANDLE}}",
+      "title": "Follow on Twitter",
+      "icon": "🐦",
+      "enabled": false
+    },
+    {
+      "type": "private",
+      "url": "{{PRIVATE_LINK_URL}}",
+      "title": "Private Conversations Here",
+      "icon": "💌",
+      "ageGate": true,
+      "enabled": false
+    },
+    {
+      "type": "custom",
+      "url": "{{CUSTOM_URL}}",
+      "title": "{{CUSTOM_TITLE}}",
+      "icon": "🔗",
+      "enabled": false
+    }
+  ],
+  "branding": {
+    "primaryGradient": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    "secondaryGradient": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    "backgroundColor": "#0a0a0a",
+    "textColor": "#ffffff"
+  },
+  "analytics": {
+    "googleAnalytics": "{{GA_MEASUREMENT_ID}}",
+    "facebookPixel": "{{FB_PIXEL_ID}}",
+    "tiktokPixel": "{{TIKTOK_PIXEL_ID}}",
+    "microsoftClarity": "{{CLARITY_PROJECT_ID}}"
+  },
+  "domain": {
+    "primary": "gramflow.link",
+    "subdomain": "{{SUBDOMAIN}}",
+    "customDomain": ""
+  },
+  "seo": {
+    "title": "{{INFLUENCER_NAME}} | Links",
+    "description": "Connect with {{INFLUENCER_NAME}} - Your gateway to exclusive content and conversations",
+    "keywords": "{{INFLUENCER_NAME}}, social media, links, {{PLATFORM_KEYWORDS}}"
+  },
+  "features": {
+    "ageVerification": false,
+    "deepLinking": true,
+    "pwa": true,
+    "analytics": true,
+    "contactForm": false,
+    "newsletter": false
+  },
+  "deployment": {
+    "netlifyAppId": "",
+    "deployDate": "",
+    "status": "pending",
+    "url": ""
+  }
+}

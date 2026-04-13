@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://gramflow.link/sitemap.xml
