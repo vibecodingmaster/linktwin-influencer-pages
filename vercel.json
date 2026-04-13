@@ -1,18 +1,12 @@
 {
   "version": 2,
-  "public": true,
-  "rewrites": [
-    {
-      "source": "/zoe.novak.ga",
-      "destination": "/zoe.novak.ga/index.html"
-    },
-    {
-      "source": "/zoe.novak.ga/(.*)",
-      "destination": "/zoe.novak.ga/$1"
-    },
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
     {
       "source": "/",
-      "destination": "/zoe.novak.ga"
+      "destination": "/zoe.novak.ga",
+      "permanent": false
     }
   ],
   "headers": [
