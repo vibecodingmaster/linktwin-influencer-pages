@@ -1,0 +1,8 @@
+# Netlify Redirects File (Backup - netlify.toml takes precedence)
+
+# Zoe Novak
+/zoe.novak.ga /zoe.novak.ga/index.html 200
+/zoe.novak.ga/* /zoe.novak.ga/:splat 200
+
+# Root redirect
+/ /zoe.novak.ga 302

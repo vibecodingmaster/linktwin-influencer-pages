@@ -1,0 +1,69 @@
+# Netlify Configuration for Multiple Influencer Pages
+# Domain: link.gramflow.link
+
+[build]
+  publish = "."
+  command = "echo 'Static site - no build required'"
+
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Cache Headers for Static Assets
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Influencer Page Routes
+# Each influencer gets their own path: /influencer.name
+
+# Zoe Novak - Page 1/50
+[[redirects]]
+  from = "/zoe.novak.ga"
+  to = "/zoe.novak.ga/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zoe.novak.ga/*"
+  to = "/zoe.novak.ga/:splat"
+  status = 200
+
+# Add more influencer routes here as you create them
+# Example for next influencer:
+# [[redirects]]
+#   from = "/influencer2.name"
+#   to = "/influencer2.name/index.html"
+#   status = 200
+
+# Fallback - redirect root to first influencer or landing page
+[[redirects]]
+  from = "/"
+  to = "/zoe.novak.ga"
+  status = 302
