@@ -25,6 +25,14 @@
     {
       "source": "/zoe.novak.ga/:path*",
       "destination": "/zoe.novak.ga/:path*"
+    },
+    {
+      "source": "/Lola_Winslow",
+      "destination": "/Lola_Winslow/index.html"
+    },
+    {
+      "source": "/Lola_Winslow/:path*",
+      "destination": "/Lola_Winslow/:path*"
     }
   ],
   "headers": [
