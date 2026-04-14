@@ -9,6 +9,24 @@
       "permanent": false
     }
   ],
+  "rewrites": [
+    {
+      "source": "/yuki.kimura.japan",
+      "destination": "/yuki.kimura.japan/index.html"
+    },
+    {
+      "source": "/yuki.kimura.japan/:path*",
+      "destination": "/yuki.kimura.japan/:path*"
+    },
+    {
+      "source": "/zoe.novak.ga",
+      "destination": "/zoe.novak.ga/index.html"
+    },
+    {
+      "source": "/zoe.novak.ga/:path*",
+      "destination": "/zoe.novak.ga/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
