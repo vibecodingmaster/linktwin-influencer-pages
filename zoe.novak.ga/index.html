@@ -7,25 +7,18 @@
     <title>Zoe Novak</title>
     <meta name="description" content="Zoe Novak">
 
-    <!-- Android Intent URL to force external browser -->
-    <meta name="intent" content="intent://zoenovakga#Intent;scheme=https;package=com.android.chrome;end">
-
     <link rel="stylesheet" href="/zoe.novak.ga/styles.css">
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-    <!-- Deeplink Modal for Instagram iOS Users -->
+    <!-- Deeplink Modal for Instagram In-App Browser Users -->
     <div id="deeplinkModal" class="modal">
         <div class="modal-content">
             <button onclick="closeDeeplinkModal()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
             <h2>Open in Browser</h2>
             <p>You're viewing this in Instagram's browser. For the best experience, please open this page in your default browser.</p>
-            <div style="margin: 24px 0; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 12px;">
-                <p style="font-size: 14px; margin: 0;"><strong>How to open in Safari:</strong></p>
-                <ol style="text-align: left; margin: 12px 0 0 0; padding-left: 20px; font-size: 14px;">
-                    <li>Tap the three dots (...) at the bottom right</li>
-                    <li>Select "Open in Safari" or "Open in Browser"</li>
-                </ol>
+            <div class="platform-instructions" style="margin: 24px 0; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+                <!-- Instructions will be dynamically inserted based on platform -->
             </div>
             <button onclick="closeDeeplinkModal()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;">Got it</button>
         </div>

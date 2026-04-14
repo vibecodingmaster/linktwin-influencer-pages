@@ -129,16 +129,40 @@ document.addEventListener('DOMContentLoaded', function() {
             user_agent: ua
         });
 
-        // For iOS, show modal with instructions
-        if (/iPad|iPhone|iPod/.test(ua)) {
-            const deeplinkModal = document.getElementById('deeplinkModal');
-            if (deeplinkModal) {
-                setTimeout(() => {
-                    deeplinkModal.style.display = 'flex';
-                }, 500);
+        // Detect platform
+        const isIOS = /iPad|iPhone|iPod/.test(ua);
+        const isAndroid = /Android/.test(ua);
+
+        // Show modal for both iOS and Android
+        const deeplinkModal = document.getElementById('deeplinkModal');
+        if (deeplinkModal) {
+            // Update modal content based on platform
+            const instructions = deeplinkModal.querySelector('.platform-instructions');
+            if (instructions) {
+                if (isAndroid) {
+                    instructions.innerHTML = `
+                        <p style="font-size: 14px; margin: 0;"><strong>How to open in Chrome:</strong></p>
+                        <ol style="text-align: left; margin: 12px 0 0 0; padding-left: 20px; font-size: 14px;">
+                            <li>Tap the three dots (⋮) at the top right</li>
+                            <li>Select "Open in Chrome" or "Open in external browser"</li>
+                        </ol>
+                    `;
+                } else if (isIOS) {
+                    instructions.innerHTML = `
+                        <p style="font-size: 14px; margin: 0;"><strong>How to open in Safari:</strong></p>
+                        <ol style="text-align: left; margin: 12px 0 0 0; padding-left: 20px; font-size: 14px;">
+                            <li>Tap the three dots (...) at the bottom right</li>
+                            <li>Select "Open in Safari" or "Open in Browser"</li>
+                        </ol>
+                    `;
+                }
             }
+
+            setTimeout(() => {
+                deeplinkModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }, 500);
         }
-        // For Android, the intent URL in the head will handle it automatically
     }
 })();
 

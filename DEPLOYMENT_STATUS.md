@@ -25,8 +25,8 @@ https://go.gramflow.link/yukikimura
 
 ✅ **Security Enhancements:**
 - Content-Security-Policy meta tag (prevents certificate errors)
-- Android intent URL (forces external browser)
-- Instagram deeplink modal (iOS instructions)
+- Instagram in-app browser detection (iOS & Android)
+- Platform-specific deeplink modal (Safari for iOS, Chrome for Android)
 
 ✅ **Profile Details:**
 - Name: Yuki Kimura

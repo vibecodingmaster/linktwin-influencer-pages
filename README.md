@@ -1,6 +1,6 @@
 # LinkTwin Influencer Pages
 
-Multi-influencer link-in-bio platform hosted on Netlify.
+Multi-influencer link-in-bio platform hosted on Vercel.
 
 ## Domain Structure
 
@@ -22,55 +22,61 @@ root/
 │   └── profile.jpg.jpg
 ├── influencer2.name/      # Influencer 2 (to be added)
 ├── influencer3.name/      # Influencer 3 (to be added)
-├── netlify.toml           # Netlify configuration & routing
+├── vercel.json           # Vercel configuration & routing
 ├── _redirects             # Backup redirects file
 └── index.html             # Root redirect page
 ```
 
 ## Deployment
 
-1. **Platform:** Netlify
+1. **Platform:** Vercel
 2. **Repository:** GitHub - `linktwin-influencer-pages`
 3. **Build Command:** None (static files)
 4. **Publish Directory:** `.` (root)
 
 ## DNS Configuration
 
-Point your domain `link.gramflow.link` to Netlify:
+Point your domain `link.gramflow.link` to Vercel:
 
 ### Option 1: CNAME (Subdomain)
 ```
 Type: CNAME
 Name: link
-Value: [your-site].netlify.app
+Value: cname.vercel-dns.com
 ```
 
 ### Option 2: A Records (Apex Domain)
 ```
 Type: A
 Name: link
-Value: 75.2.60.5
-
-(Add 3 more A records with Netlify's IPs)
+Value: 76.76.21.21
 ```
 
-### Option 3: Netlify DNS (Recommended)
-Use Netlify's nameservers for full control.
+### Recommended Approach
+Add your domain directly in the Vercel dashboard under Project Settings → Domains. Vercel will automatically configure DNS and provide SSL certificates.
 
 ## Adding New Influencers
 
 1. Create new folder: `influencer.name/`
 2. Copy template files from `zoe.novak.ga/`
 3. Update content and images
-4. Add redirect rules to `netlify.toml`:
-   ```toml
-   [[redirects]]
-     from = "/influencer.name"
-     to = "/influencer.name/index.html"
-     status = 200
+4. Add rewrite rules to `vercel.json`:
+   ```json
+   {
+     "rewrites": [
+       {
+         "source": "/influencer.name",
+         "destination": "/influencer.name/index.html"
+       },
+       {
+         "source": "/influencer.name/:path*",
+         "destination": "/influencer.name/:path*"
+       }
+     ]
+   }
    ```
 5. Commit and push to GitHub
-6. Netlify auto-deploys
+6. Vercel auto-deploys
 
 ## Progress
 
@@ -82,7 +88,7 @@ Use Netlify's nameservers for full control.
 ## Tech Stack
 
 - HTML5 + CSS3 + Vanilla JavaScript
-- Netlify (Hosting + CDN)
+- Vercel (Hosting + CDN)
 - GitHub (Version Control)
 - Age verification system
 - PWA ready
