@@ -1,0 +1,345 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body - Instagram-style dark background */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(180deg, #0d1a2d 0%, #0a0a0a 40%, #000000 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Main Container */
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Profile Image */
+.profile-image-wrapper {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Profile Name */
+.profile-name {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+/* Profile Handle */
+.profile-handle {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+/* Badge Icon */
+.badge-wrapper {
+    margin-bottom: 24px;
+}
+
+.badge-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #ff3366 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+}
+
+/* Message Button - Single Link */
+.link-wrapper {
+    width: 100%;
+    max-width: 550px;
+    margin-bottom: 32px;
+}
+
+.message-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 16px 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    gap: 12px;
+}
+
+.message-button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.message-button:active {
+    transform: scale(0.98);
+}
+
+.messenger-icon {
+    flex-shrink: 0;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 0;
+    width: 100%;
+    max-width: 550px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 32px;
+}
+
+.tab {
+    flex: 1;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tab.active {
+    color: #ffffff;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ffffff;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    width: 100%;
+}
+
+.empty-icon {
+    margin-bottom: 20px;
+    opacity: 0.4;
+}
+
+.empty-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.empty-text {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 300px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Age Verification Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16161e 100%);
+    border-radius: 20px;
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.3s ease;
+    position: relative;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-content h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.modal-content p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.age-question {
+    font-size: 17px;
+    color: #ffffff;
+    font-weight: 600;
+    margin: 24px 0 28px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-yes {
+    background: linear-gradient(135deg, #48c774 0%, #3ec46d 100%);
+    color: #ffffff;
+}
+
+.btn-yes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(72, 199, 116, 0.4);
+}
+
+.btn-yes:active {
+    transform: translateY(0);
+}
+
+.btn-no {
+    background: linear-gradient(135deg, #f14668 0%, #e73b5c 100%);
+    color: #ffffff;
+}
+
+.btn-no:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(241, 70, 104, 0.4);
+}
+
+.btn-no:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .profile-container {
+        padding: 24px 16px 40px;
+    }
+
+    .profile-name {
+        font-size: 28px;
+    }
+
+    .profile-handle {
+        font-size: 15px;
+    }
+
+    .message-button {
+        padding: 14px 18px;
+        font-size: 15px;
+    }
+
+    .modal-content {
+        padding: 32px 24px;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+a:focus,
+button:focus {
+    outline: 2px solid rgba(66, 153, 225, 0.6);
+    outline-offset: 2px;
+}
