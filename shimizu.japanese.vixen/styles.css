@@ -15,7 +15,7 @@
   --pink:       #ff4d7e;
   --pink-light: #ffb7d5;
   --pink-pale:  #ffe8f2;
-  --violet:     #8b5cf6;
+  --violet:     #c0394e;
   --teal:       #2AABEE;
   --green:      #4ade80;
 
@@ -284,16 +284,17 @@ button { font-family: inherit; }
 
 /* ── Profile Name ───────────────────────────────────────────── */
 .profile-name {
-  font-family: var(--font-serif);
-  font-size: clamp(54px, 11vw, 82px);
-  font-weight: 300;
-  font-style: italic;
-  letter-spacing: -0.025em;
-  line-height: 1;
+  font-family: var(--font-mono);
+  font-size: clamp(20px, 4.2vw, 32px);
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
   text-align: center;
   margin-bottom: 12px;
   cursor: default;
   user-select: none;
+  word-break: break-word;
 
   /* Gradient from white through blush to pink */
   background: linear-gradient(
@@ -369,13 +370,13 @@ button { font-family: inherit; }
 
 /* ── Bio / Typewriter (04_typewriter.txt) ───────────────────── */
 .bio-line {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.46);
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.60);
   text-align: center;
-  line-height: 1.85;
-  max-width: 360px;
+  line-height: 1.7;
+  max-width: 420px;
   margin-bottom: 48px;
-  min-height: 56px;
+  min-height: 64px;
   font-weight: 300;
   letter-spacing: 0.02em;
 }
@@ -428,10 +429,10 @@ button { font-family: inherit; }
   padding: 20px 44px;
   border-radius: 64px;
 
-  /* Violet-to-pink gradient tint */
+  /* Deep crimson-to-pink gradient tint */
   background: linear-gradient(
     135deg,
-    rgba(139, 92, 246, 0.20) 0%,
+    rgba(192, 57,  78,  0.22) 0%,
     rgba(255, 77,  126, 0.15) 60%,
     rgba(255, 77,  126, 0.08) 100%
   );
@@ -453,14 +454,14 @@ button { font-family: inherit; }
   transform: translateY(-5px) scale(1.03);
   background: linear-gradient(
     135deg,
-    rgba(139, 92, 246, 0.30) 0%,
+    rgba(192, 57,  78,  0.32) 0%,
     rgba(255, 77,  126, 0.24) 60%,
     rgba(255, 77,  126, 0.15) 100%
   );
   box-shadow:
     var(--glass-shadow),
-    0 20px 50px rgba(255, 77, 126, 0.20),
-    0 0 80px rgba(139, 92, 246, 0.10);
+    0 20px 50px rgba(255, 77, 126, 0.22),
+    0 0 80px rgba(192, 57, 78, 0.12);
 }
 
 .tg-button:active .tg-content {
