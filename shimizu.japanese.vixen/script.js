@@ -54,10 +54,10 @@
         const size  = 1.4 + Math.abs(wave) * 1.4;
         const alpha = 0.14 + Math.abs(wave) * 0.28;
 
-        /* Pink-to-violet color shift based on position */
-        const hue = 325 + wave * 30;   /* ~295–355: magenta → pink */
-        const sat = 60  + Math.abs(wave) * 30;
-        const lit = 55  + wave * 12;
+        /* Pure pink/rose — hue locked 340–355, no purple */
+        const hue = 347 + wave * 8;    /* ~339–355: rose → hot pink only */
+        const sat = 75  + Math.abs(wave) * 20;
+        const lit = 52  + wave * 10;
 
         ctx.beginPath();
         ctx.arc(px, py, Math.max(0.4, size), 0, Math.PI * 2);
