@@ -53,6 +53,70 @@
     {
       "source": "/nova.sinclair/:path*",
       "destination": "/nova.sinclair/:path*"
+    },
+    {
+      "source": "/mika.japanese.kobayashi",
+      "destination": "/mika.japanese.kobayashi/index.html"
+    },
+    {
+      "source": "/mika.japanese.kobayashi/:path*",
+      "destination": "/mika.japanese.kobayashi/:path*"
+    },
+    {
+      "source": "/japanese.aiko.nakamura",
+      "destination": "/japanese.aiko.nakamura/index.html"
+    },
+    {
+      "source": "/japanese.aiko.nakamura/:path*",
+      "destination": "/japanese.aiko.nakamura/:path*"
+    },
+    {
+      "source": "/emi.japanese.mori",
+      "destination": "/emi.japanese.mori/index.html"
+    },
+    {
+      "source": "/emi.japanese.mori/:path*",
+      "destination": "/emi.japanese.mori/:path*"
+    },
+    {
+      "source": "/maryna.divchyna.ukranian",
+      "destination": "/maryna.divchyna.ukranian/index.html"
+    },
+    {
+      "source": "/maryna.divchyna.ukranian/:path*",
+      "destination": "/maryna.divchyna.ukranian/:path*"
+    },
+    {
+      "source": "/opheliavoss",
+      "destination": "/opheliavoss/index.html"
+    },
+    {
+      "source": "/opheliavoss/:path*",
+      "destination": "/opheliavoss/:path*"
+    },
+    {
+      "source": "/honeydewiris",
+      "destination": "/honeydewiris/index.html"
+    },
+    {
+      "source": "/honeydewiris/:path*",
+      "destination": "/honeydewiris/:path*"
+    },
+    {
+      "source": "/maevesterling",
+      "destination": "/maevesterling/index.html"
+    },
+    {
+      "source": "/maevesterling/:path*",
+      "destination": "/maevesterling/:path*"
+    },
+    {
+      "source": "/shimizu.japanese.vixen",
+      "destination": "/shimizu.japanese.vixen/index.html"
+    },
+    {
+      "source": "/shimizu.japanese.vixen/:path*",
+      "destination": "/shimizu.japanese.vixen/:path*"
     }
   ],
   "headers": [
@@ -69,7 +133,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://*.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://stats.g.doubleclick.net https://*.facebook.com https://*.vercel-insights.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://*.vercel-insights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://stats.g.doubleclick.net https://*.facebook.com https://*.vercel-insights.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
         },
         {
           "key": "X-Content-Type-Options",
