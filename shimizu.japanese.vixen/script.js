@@ -54,14 +54,12 @@
         const size  = 1.4 + Math.abs(wave) * 1.4;
         const alpha = 0.14 + Math.abs(wave) * 0.28;
 
-        /* Pure pink/rose — hue locked 340–355, no purple */
-        const hue = 347 + wave * 8;    /* ~339–355: rose → hot pink only */
-        const sat = 75  + Math.abs(wave) * 20;
-        const lit = 52  + wave * 10;
+        /* Black & white dots — pure white, varying opacity */
+        const brightness = Math.floor(210 + Math.abs(wave) * 45);
 
         ctx.beginPath();
         ctx.arc(px, py, Math.max(0.4, size), 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${hue},${sat}%,${lit}%,${alpha})`;
+        ctx.fillStyle = `rgba(${brightness},${brightness},${brightness},${alpha})`;
         ctx.fill();
       }
     }
