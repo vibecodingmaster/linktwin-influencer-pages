@@ -89,12 +89,12 @@ button { font-family: inherit; }
 .welcome-section {
   position: relative;
   width: 100%;
-  min-height: 60vh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 90px 20px 70px;
+  padding: 60px 20px 30px;
   overflow: visible;
   background: var(--ink);
 }
@@ -204,7 +204,7 @@ button { font-family: inherit; }
 /* ── Content Section ────────────────────────────────────────── */
 .content-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 75vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -226,7 +226,7 @@ button { font-family: inherit; }
   z-index: 10;
   max-width: 530px;
   width: 100%;
-  padding: 60px 28px 88px;
+  padding: 36px 28px 52px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -529,11 +529,11 @@ button { font-family: inherit; }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .welcome-section { padding: 64px 16px 50px; }
-  .welcome-heading { margin-bottom: 52px; }
+  .welcome-section { padding: 40px 16px 20px; }
+  .welcome-heading { margin-bottom: 36px; }
   .fan-stage { height: 210px; }
   .fan-card  { width: 140px; height: 175px; left: 40px; }
-  .profile-card { padding: 48px 20px 72px; }
+  .profile-card { padding: 28px 20px 44px; }
   .tg-content { padding: 17px 28px; }
   .tg-label   { font-size: 14px; }
   .modal-box  { padding: 38px 26px 34px; }
