@@ -133,6 +133,14 @@
     {
       "source": "/ukrainian.olena.beauty/:path*",
       "destination": "/ukrainian.olena.beauty/:path*"
+    },
+    {
+      "source": "/zoenovakga",
+      "destination": "/zoenovakga/index.html"
+    },
+    {
+      "source": "/zoenovakga/:path*",
+      "destination": "/zoenovakga/:path*"
     }
   ],
   "headers": [
