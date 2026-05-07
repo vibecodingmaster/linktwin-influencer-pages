@@ -125,6 +125,14 @@
     {
       "source": "/yana.ukrainska.goddess/:path*",
       "destination": "/yana.ukrainska.goddess/:path*"
+    },
+    {
+      "source": "/ukrainian.olena.beauty",
+      "destination": "/ukrainian.olena.beauty/index.html"
+    },
+    {
+      "source": "/ukrainian.olena.beauty/:path*",
+      "destination": "/ukrainian.olena.beauty/:path*"
     }
   ],
   "headers": [
