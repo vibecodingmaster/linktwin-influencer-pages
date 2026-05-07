@@ -117,6 +117,14 @@
     {
       "source": "/shimizu.japanese.vixen/:path*",
       "destination": "/shimizu.japanese.vixen/:path*"
+    },
+    {
+      "source": "/yana.ukrainska.goddess",
+      "destination": "/yana.ukrainska.goddess/index.html"
+    },
+    {
+      "source": "/yana.ukrainska.goddess/:path*",
+      "destination": "/yana.ukrainska.goddess/:path*"
     }
   ],
   "headers": [
