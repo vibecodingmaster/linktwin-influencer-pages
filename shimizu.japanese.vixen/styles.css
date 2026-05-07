@@ -1,13 +1,13 @@
 /* ============================================================
    SHIMIZU.JAPANESE.VIXEN — Landing Page
    Aesthetic: Neo-Tokyo Nacht · Dark Cherry Blossom
-   Components: DottedSurface · LiquidGlass · Typewriter
-               TextScramble · LocationTag · ShaderLines
+   Components: WelcomeStory · SpiralAnimation · LiquidGlass
+               Typewriter · TextScramble · LocationTag
    ============================================================ */
 
 /* ── Design Tokens ──────────────────────────────────────────── */
 :root {
-  --ink:        #060608;
+  --ink:        #000000;
   --void:       #09090f;
   --dusk:       #12121e;
   --layer:      rgba(255, 255, 255, 0.04);
@@ -30,7 +30,6 @@
   --ease:       cubic-bezier(0.4, 0, 0.2, 1);
   --spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Liquid glass shadow — exact values from 02_Liquid_Glass.txt */
   --glass-shadow:
     0 0 6px rgba(0, 0, 0, 0.04),
     0 2px 8px rgba(0, 0, 0, 0.12),
@@ -83,119 +82,140 @@ button { font-family: inherit; }
 }
 
 @keyframes sakura-fall {
-  0%   { transform: translateY(0)      translateX(0)            rotate(0deg);        opacity: 0;   }
+  0%   { transform: translateY(0)     translateX(0)            rotate(0deg);        opacity: 0;   }
   8%   { opacity: 0.55; }
   88%  { opacity: 0.30; }
-  100% { transform: translateY(110vh)  translateX(var(--drift)) rotate(var(--spin)); opacity: 0;   }
+  100% { transform: translateY(110vh) translateX(var(--drift)) rotate(var(--spin)); opacity: 0;   }
 }
 
-/* ── Collage Section ────────────────────────────────────────── */
-.collage-section {
+/* ── Welcome Section (08_welcomeTo_my_story.txt) ────────────── */
+.welcome-section {
   position: relative;
   width: 100%;
-  height: 70vh;
-  min-height: 360px;
-  max-height: 660px;
-  overflow: hidden;
-}
-
-.collage-grid {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  /* Asymmetric column weights for visual interest */
-  grid-template-columns: 1.2fr 0.95fr 0.85fr;
-  grid-template-rows: 58% 42%;
-  gap: 3px;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 90px 20px 70px;
+  overflow: visible;
   background: var(--ink);
 }
 
-/* Cells */
-.cell {
-  overflow: hidden;
-  position: relative;
-  background: linear-gradient(
-    145deg,
-    #18101f 0%,
-    #0f0f1e 50%,
-    #1a0e28 100%
-  );
+.welcome-subtitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.36);
+  margin-bottom: 18px;
 }
 
-/* Layout: cell-1 spans full left column */
-.cell-1 { grid-row: 1 / 3; grid-column: 1; }
-.cell-2 { grid-row: 1;     grid-column: 2; }
-.cell-3 { grid-row: 1;     grid-column: 3; }
-.cell-4 { grid-row: 2;     grid-column: 2; }
-.cell-5 { grid-row: 2;     grid-column: 3; }
-
-.cell-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.9s var(--ease), filter 0.5s var(--ease);
-  will-change: transform;
-}
-
-.cell:hover .cell-img {
-  transform: scale(1.07);
-  filter: brightness(1.08) saturate(1.1);
-}
-
-/* Subtle vignette on each cell */
-.cell::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(6, 6, 8, 0.08) 0%,
-    transparent          50%,
-    rgba(6, 6, 8, 0.55) 100%
-  );
-  pointer-events: none;
-}
-
-/* Decorative Japanese kanji floating in collage */
-.collage-kanji {
-  position: absolute;
-  top: 16px;
-  right: 22px;
+.welcome-heading {
   font-family: var(--font-serif);
-  font-size: 80px;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.07);
-  pointer-events: none;
-  z-index: 3;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.08;
+  margin-bottom: 72px;
+  background: linear-gradient(
+    135deg,
+    #ffffff     0%,
+    #fff0f6    40%,
+    #ffb7d5    70%,
+    var(--pink) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-accent {
+  font-style: italic;
+}
+
+/* ── Photo Fan Stage ────────────────────────────────────────── */
+.fan-stage {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  margin-bottom: 20px;
+}
+
+.fan-wrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+}
+
+.fan-card {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 180px;
+  height: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  transform: translateX(0) rotate(0deg);
+  transition: transform 0.9s var(--spring);
+  will-change: transform;
+  box-shadow:
+    0 14px 42px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  cursor: grab;
   user-select: none;
 }
 
-/* Bottom gradient — blends collage into content section */
-.collage-bottom-fade {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 60%;
-  background: linear-gradient(to bottom, transparent, var(--ink));
-  pointer-events: none;
-  z-index: 3;
+.fan-card:active { cursor: grabbing; }
+
+.fan-card:hover {
+  transform: translateY(-14px) scale(1.06) !important;
+  z-index: 9999 !important;
+  transition-delay: 0s !important;
+  transition-duration: 0.32s !important;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 77, 126, 0.18);
 }
 
-/* Side fades — removes harsh edges */
-.collage-side-fade {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      to right,
-      var(--ink)    0%,
-      transparent   6%,
-      transparent  94%,
-      var(--ink)   100%
-    );
+.fan-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
   pointer-events: none;
-  z-index: 3;
+  -webkit-user-drag: none;
+}
+
+/* Subtle grid behind the fan (matching the React component) */
+.welcome-grid-bg {
+  position: absolute;
+  left: 0; right: 0;
+  top: 200px;
+  bottom: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to right,  rgba(87, 83, 78, 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(87, 83, 78, 0.10) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 110%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 110%);
+  pointer-events: none;
+}
+
+/* Bottom fade into spiral section */
+.welcome-fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--ink));
+  pointer-events: none;
+  z-index: 5;
 }
 
 /* ── Content Section ────────────────────────────────────────── */
@@ -206,23 +226,16 @@ button { font-family: inherit; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    var(--ink)   0%,
-    #0d0d1e     25%,
-    #09091a     60%,
-    #07071500  100%
-  );
+  background: #000000;
 }
 
-/* ── Animated Dot Canvas (00_dotted_surface.txt) ───────────── */
-.dot-canvas {
+/* ── Spiral Canvas (09_enter_theme.txt) ─────────────────────── */
+.spiral-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.5;
 }
 
 /* ── Profile Card ───────────────────────────────────────────── */
@@ -254,7 +267,7 @@ button { font-family: inherit; }
 
 .kanji-tag {
   font-family: var(--font-serif);
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 400;
   color: var(--pink);
   letter-spacing: 0.04em;
@@ -296,13 +309,12 @@ button { font-family: inherit; }
   user-select: none;
   word-break: break-word;
 
-  /* Gradient from white through blush to pink */
   background: linear-gradient(
     140deg,
-    #ffffff     0%,
-    #fff0f6    28%,
+    #ffffff          0%,
+    #fff0f6         28%,
     var(--pink-light) 58%,
-    var(--pink) 100%
+    var(--pink)      100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -338,8 +350,6 @@ button { font-family: inherit; }
   margin-bottom: 34px;
   letter-spacing: 0.05em;
   transition: all 0.32s var(--ease);
-  position: relative;
-  overflow: hidden;
 }
 
 .loc-tag:hover {
@@ -407,19 +417,16 @@ button { font-family: inherit; }
   outline: none;
 }
 
-/* Liquid glass distortion backdrop */
 .tg-glass-layer {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  /* SVG liquid glass filter from 02_Liquid_Glass.txt */
   backdrop-filter: url('#liquid-glass') blur(10px);
   -webkit-backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.035);
   z-index: 0;
 }
 
-/* Button content sits above the glass layer */
 .tg-content {
   position: relative;
   z-index: 1;
@@ -429,7 +436,6 @@ button { font-family: inherit; }
   padding: 20px 44px;
   border-radius: 64px;
 
-  /* Deep crimson-to-pink gradient tint */
   background: linear-gradient(
     135deg,
     rgba(192, 57,  78,  0.22) 0%,
@@ -437,11 +443,9 @@ button { font-family: inherit; }
     rgba(255, 77,  126, 0.08) 100%
   );
 
-  /* Top highlight border */
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-top-color: rgba(255, 255, 255, 0.28);
 
-  /* Liquid glass shadow from component */
   box-shadow: var(--glass-shadow);
 
   transition:
@@ -474,7 +478,6 @@ button { font-family: inherit; }
   outline-offset: 3px;
 }
 
-/* Telegram icon — official blue with glow */
 .tg-logo {
   width: 23px;
   height: 23px;
@@ -488,7 +491,6 @@ button { font-family: inherit; }
   filter: drop-shadow(0 0 12px rgba(42, 171, 238, 0.80));
 }
 
-/* Button text */
 .tg-label {
   color: var(--white);
   font-size: 15.5px;
@@ -497,7 +499,6 @@ button { font-family: inherit; }
   white-space: nowrap;
 }
 
-/* Chevron arrow */
 .tg-chevron {
   width: 17px;
   height: 17px;
@@ -511,16 +512,15 @@ button { font-family: inherit; }
   color: var(--pink-light);
 }
 
-/* Shimmer sweep animation on the button */
 .tg-shimmer {
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background: linear-gradient(
     105deg,
-    transparent  30%,
+    transparent               30%,
     rgba(255, 255, 255, 0.07) 50%,
-    transparent  70%
+    transparent               70%
   );
   background-size: 200% 100%;
   animation: shimmer 3.5s linear 1.2s infinite;
@@ -533,7 +533,7 @@ button { font-family: inherit; }
   100% { background-position: -200% center; }
 }
 
-/* ── Footer Mono (text scramble on hover) ───────────────────── */
+/* ── Footer Mono ────────────────────────────────────────────── */
 .footer-mono {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -629,10 +629,7 @@ button { font-family: inherit; }
   margin: 24px 0 28px;
 }
 
-.modal-btns {
-  display: flex;
-  gap: 10px;
-}
+.modal-btns { display: flex; gap: 10px; }
 
 .modal-instructions {
   margin: 18px 0;
@@ -643,11 +640,10 @@ button { font-family: inherit; }
   text-align: left;
 }
 
-.modal-instructions p { margin: 0 0 7px; font-size: 13px; font-weight: 600; color: var(--white); }
+.modal-instructions p  { margin: 0 0 7px; font-size: 13px; font-weight: 600; color: var(--white); }
 .modal-instructions ol { padding-left: 18px; }
 .modal-instructions li { font-size: 13px; color: rgba(255, 255, 255, 0.60); margin: 5px 0; }
 
-/* Shared pill button */
 .btn-pill {
   flex: 1;
   padding: 13px 22px;
@@ -683,7 +679,6 @@ button { font-family: inherit; }
   color: var(--white);
 }
 
-/* Single-button modal layout */
 .modal-box .btn-fill:only-child {
   flex: none;
   width: 100%;
@@ -692,40 +687,33 @@ button { font-family: inherit; }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .collage-section {
-    height: 54vh;
-    min-height: 280px;
-  }
+  .welcome-section { padding: 64px 16px 50px; }
 
-  .collage-kanji { font-size: 52px; top: 12px; right: 14px; }
+  .welcome-heading { margin-bottom: 52px; }
+
+  .fan-stage { height: 210px; }
+
+  .fan-card {
+    width: 140px;
+    height: 175px;
+    left: 40px;
+  }
 
   .profile-card { padding: 48px 20px 72px; }
 
-  .tg-content { padding: 17px 32px; }
-  .tg-label   { font-size: 14.5px; }
+  .tg-content { padding: 17px 28px; }
+  .tg-label   { font-size: 14px; }
 
-  .modal-box { padding: 38px 26px 34px; }
+  .modal-box  { padding: 38px 26px 34px; }
   .modal-btns { flex-direction: column; }
-}
-
-@media (max-width: 400px) {
-  /* Simplified 2-col collage on very small screens */
-  .collage-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-  }
-  .cell-1 { grid-row: 1 / 3; grid-column: 1; }
-  .cell-2 { grid-row: 1;     grid-column: 2; }
-  .cell-3 { grid-row: 2;     grid-column: 2; }
-  .cell-4, .cell-5 { display: none; }
 }
 
 /* ── Accessibility ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration:       0.01ms !important;
-    animation-iteration-count: 1    !important;
-    transition-duration:      0.01ms !important;
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:       0.01ms !important;
   }
 }
 

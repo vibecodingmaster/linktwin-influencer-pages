@@ -1,88 +1,348 @@
 /* ============================================================
    shimizu.japanese.vixen — Script
-   Implements all components from /components/ folder:
-     00_dotted_surface  → canvas wave-dot animation
-     02_Liquid_Glass    → SVG filter on Telegram button
-     03_text_scrable    → scramble on name + footer hover
-     04_typewriter      → animated bio text
-     06_hover_to_reveal → location tag (Tokyo → live JST time)
+   Components:
+     08_welcomeTo_my_story → animated photo fan spread
+     09_enter_theme        → spiral star animation (GSAP → rAF)
+     02_Liquid_Glass       → SVG filter on Telegram button
+     03_text_scrable       → scramble on name + footer hover
+     04_typewriter         → animated bio text
+     06_hover_to_reveal    → location tag (Tokyo → live JST time)
    Plus: sakura petals, age gate, deeplink detection
    ============================================================ */
 
 'use strict';
 
+
 /* ──────────────────────────────────────────────────────────────
-   1. DOTTED SURFACE (00_dotted_surface.txt)
-   Vanilla canvas 2D adaptation of the Three.js wave-dot system.
-   Pink-tinted dots arranged in a grid, animated with sine waves.
+   1. PHOTO FAN (08_welcomeTo_my_story.txt)
+   Spring-spread of 5 cards staggered by 120ms each.
+   Mirrors framer-motion spring with CSS cubic-bezier.
    ────────────────────────────────────────────────────────────── */
-(function initDotSurface() {
-  const canvas = document.getElementById('dotCanvas');
+(function initPhotoGallery() {
+  const fan = document.getElementById('photoFan');
+  if (!fan) return;
+
+  const cards = Array.from(fan.querySelectorAll('.fan-card'));
+
+  /* Final resting position for each card: [x offset px, rotation deg, z-index] */
+  const layout = [
+    { x: -280, rot: -4,   z: 50 },
+    { x: -140, rot: -2,   z: 40 },
+    { x:    0, rot:  1,   z: 30 },
+    { x:  140, rot:  2.5, z: 20 },
+    { x:  280, rot:  4,   z: 10 },
+  ];
+
+  /* Set z-index immediately so stacking order is stable */
+  cards.forEach((card, i) => {
+    card.style.zIndex = layout[i].z;
+  });
+
+  /* Spread cards after page settles; each card delayed by 120ms */
+  setTimeout(() => {
+    cards.forEach((card, i) => {
+      card.style.transitionDelay = (i * 0.12) + 's';
+      card.style.transform = `translateX(${layout[i].x}px) rotate(${layout[i].rot}deg)`;
+    });
+
+    /* Clear delays after animation so hover still works snappily */
+    setTimeout(() => {
+      cards.forEach(card => { card.style.transitionDelay = '0s'; });
+    }, 1400);
+  }, 400);
+})();
+
+
+/* ──────────────────────────────────────────────────────────────
+   2. SPIRAL STAR ANIMATION (09_enter_theme.txt)
+   Vanilla JS port — replaces GSAP timeline with rAF loop.
+   5 000 white stars on black canvas, 3D→2D projection.
+   time: 0→1 in 15 s, then loops.
+   ────────────────────────────────────────────────────────────── */
+(function initSpiralAnimation() {
+  const canvas = document.getElementById('spiralCanvas');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
 
-  /* Grid density */
-  const COLS = 30;
-  const ROWS = 22;
+  /* ── Constants (matching the TypeScript component exactly) ── */
+  const CHANGE_EVENT_TIME    = 0.32;
+  const CAMERA_Z             = -400;
+  const CAMERA_TRAVEL        = 3400;
+  const START_DOT_Y_OFFSET   = 28;
+  const VIEW_ZOOM            = 100;
+  const NUM_STARS            = 5000;
+  const TRAIL_LENGTH         = 80;
+  const CYCLE_DURATION_MS    = 15000;
 
-  let W, H, cSpc, rSpc, count = 0, raf;
+  let W, H, SIZE;
+  let time    = 0;
+  let lastTs  = null;
+  let rafId;
+  let stars   = [];
 
-  function resize() {
-    const parent = canvas.parentElement;
-    W = canvas.width  = parent.clientWidth  || window.innerWidth;
-    H = canvas.height = parent.clientHeight || window.innerHeight;
-    cSpc = W / (COLS - 1);
-    rSpc = H / (ROWS - 1);
+  /* ── Seeded RNG (same LCG as the TS component) ────────────── */
+  function makeSeededRandom() {
+    let seed = 1234;
+    return function () {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
   }
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
+  /* ── Math helpers ─────────────────────────────────────────── */
+  function easePower(p, g) {
+    if (p < 0.5) return 0.5 * Math.pow(2 * p, g);
+    return 1 - 0.5 * Math.pow(2 * (1 - p), g);
+  }
 
-    for (let ix = 0; ix < COLS; ix++) {
-      for (let iy = 0; iy < ROWS; iy++) {
-        /* Sine-wave Y offset (mirrors 00_dotted_surface animation) */
-        const wave =
-          Math.sin((ix + count) * 0.30) * 0.5 +
-          Math.sin((iy + count) * 0.50) * 0.5;
+  function easeOutElastic(x) {
+    const c4 = (2 * Math.PI) / 4.5;
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    return Math.pow(2, -8 * x) * Math.sin((x * 8 - 0.75) * c4) + 1;
+  }
 
-        const waveY = wave * 32;
-        const px = ix * cSpc;
-        const py = iy * rSpc + waveY;
+  function mapRange(v, a, b, c, d) {
+    return c + (d - c) * ((v - a) / (b - a));
+  }
 
-        /* Size and opacity pulse with the wave */
-        const size  = 1.4 + Math.abs(wave) * 1.4;
-        const alpha = 0.14 + Math.abs(wave) * 0.28;
+  function clamp(v, lo, hi) {
+    return v < lo ? lo : v > hi ? hi : v;
+  }
 
-        /* Black & white dots — pure white, varying opacity */
-        const brightness = Math.floor(210 + Math.abs(wave) * 45);
+  function lerp(a, b, t) {
+    return a * (1 - t) + b * t;
+  }
 
-        ctx.beginPath();
-        ctx.arc(px, py, Math.max(0.4, size), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${brightness},${brightness},${brightness},${alpha})`;
-        ctx.fill();
-      }
+  /* ── Spiral path: returns {x, y} on the Archimedean spiral ── */
+  function spiralPath(p) {
+    p = clamp(1.2 * p, 0, 1);
+    p = easePower(p, 1.8);
+    const theta = 2 * Math.PI * 6 * Math.sqrt(p);
+    const r     = 170 * Math.sqrt(p);
+    return { x: r * Math.cos(theta), y: r * Math.sin(theta) + START_DOT_Y_OFFSET };
+  }
+
+  /* ── Rotate helper for trail bounce effect ────────────────── */
+  function rotate(v1, v2, p, orientation) {
+    const mx = (v1.x + v2.x) / 2;
+    const my = (v1.y + v2.y) / 2;
+    const dx = v1.x - mx;
+    const dy = v1.y - my;
+    const angle  = Math.atan2(dy, dx);
+    const o      = orientation ? -1 : 1;
+    const r      = Math.sqrt(dx * dx + dy * dy);
+    const bounce = Math.sin(p * Math.PI) * 0.05 * (1 - p);
+    const elastic = easeOutElastic(p);
+    return {
+      x: mx + r * (1 + bounce) * Math.cos(angle + o * Math.PI * elastic),
+      y: my + r * (1 + bounce) * Math.sin(angle + o * Math.PI * elastic),
+    };
+  }
+
+  /* ── Project 3D point onto 2D canvas ─────────────────────── */
+  function showProjectedDot(pos, sizeFactor) {
+    const t2       = clamp(mapRange(time, CHANGE_EVENT_TIME, 1, 0, 1), 0, 1);
+    const camZ     = CAMERA_Z + easePower(Math.pow(t2, 1.2), 1.8) * CAMERA_TRAVEL;
+    if (pos.z <= camZ) return;
+
+    const depth = pos.z - camZ;
+    const x     = VIEW_ZOOM * pos.x / depth;
+    const y     = VIEW_ZOOM * pos.y / depth;
+    const sw    = 400 * sizeFactor / depth;
+
+    ctx.lineWidth = sw;
+    ctx.beginPath();
+    ctx.arc(x, y, 0.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  /* ── Draw the white dot trail along the spiral path ──────── */
+  function drawTrail(t1) {
+    ctx.fillStyle = 'white';
+    for (let i = 0; i < TRAIL_LENGTH; i++) {
+      const f        = mapRange(i, 0, TRAIL_LENGTH, 1.1, 0.1);
+      const sw       = (1.3 * (1 - t1) + 3.0 * Math.sin(Math.PI * t1)) * f;
+      const pathTime = t1 - 0.00015 * i;
+      const pos      = spiralPath(pathTime);
+      const off      = { x: pos.x + 5, y: pos.y + 5 };
+      const rot      = rotate(pos, off, Math.sin(time * Math.PI * 2) * 0.5 + 0.5, i % 2 === 0);
+
+      ctx.lineWidth = sw;
+      ctx.beginPath();
+      ctx.arc(rot.x, rot.y, sw / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  /* ── Draw start-dot at camera travel end ─────────────────── */
+  function drawStartDot() {
+    if (time <= CHANGE_EVENT_TIME) return;
+    const dy  = CAMERA_Z * START_DOT_Y_OFFSET / VIEW_ZOOM;
+    showProjectedDot({ x: 0, y: dy, z: CAMERA_TRAVEL }, 2.5);
+  }
+
+  /* ── Render a single star ─────────────────────────────────── */
+  function renderStar(star, t1) {
+    const spiralPos = spiralPath(star.spiralLocation);
+    const q = t1 - star.spiralLocation;
+    if (q <= 0) return;
+
+    const dp = clamp(4 * q, 0, 1);
+
+    /* Multi-stage easing matching the TS component */
+    const linEase  = dp;
+    const elasEase = easeOutElastic(dp);
+    const powEase  = dp * dp;
+
+    let easing;
+    if      (dp < 0.3) easing = lerp(linEase,  powEase,  dp / 0.3);
+    else if (dp < 0.7) easing = lerp(powEase,  elasEase, (dp - 0.3) / 0.4);
+    else               easing = elasEase;
+
+    let sx, sy;
+
+    if (dp < 0.3) {
+      sx = lerp(spiralPos.x, spiralPos.x + star.dx * 0.3, easing / 0.3);
+      sy = lerp(spiralPos.y, spiralPos.y + star.dy * 0.3, easing / 0.3);
+    } else if (dp < 0.7) {
+      const mp = (dp - 0.3) / 0.4;
+      const cs = Math.sin(mp * Math.PI) * star.rotDir * 1.5;
+      const bx = spiralPos.x + star.dx * 0.3;
+      const by = spiralPos.y + star.dy * 0.3;
+      const tx = spiralPos.x + star.dx * 0.7;
+      const ty = spiralPos.y + star.dy * 0.7;
+      sx = lerp(bx, tx, mp) + (-star.dy * 0.4 * cs) * mp;
+      sy = lerp(by, ty, mp) + ( star.dx * 0.4 * cs) * mp;
+    } else {
+      const fp   = (dp - 0.7) / 0.3;
+      const bx   = spiralPos.x + star.dx * 0.7;
+      const by   = spiralPos.y + star.dy * 0.7;
+      const tDist = star.distance * star.expansionRate * 1.5;
+      const tAngle = star.angle + 1.2 * star.rotDir * fp * Math.PI;
+      sx = lerp(bx, spiralPos.x + tDist * Math.cos(tAngle), fp);
+      sy = lerp(by, spiralPos.y + tDist * Math.sin(tAngle), fp);
     }
 
-    count += 0.052;
-    raf = requestAnimationFrame(draw);
+    /* 2D → 3D back-projection */
+    const vx = (star.z - CAMERA_Z) * sx / VIEW_ZOOM;
+    const vy = (star.z - CAMERA_Z) * sy / VIEW_ZOOM;
+
+    /* Particle size animation */
+    let sizeMul;
+    if (dp < 0.6) sizeMul = 1.0 + dp * 0.2;
+    else          sizeMul = lerp(1.2, star.finalScale, (dp - 0.6) / 0.4);
+
+    showProjectedDot({ x: vx, y: vy, z: star.z }, 8.5 * star.swFactor * sizeMul);
   }
 
-  resize();
-  window.addEventListener('resize', resize);
-  draw();
+  /* ── Main render frame ────────────────────────────────────── */
+  function render() {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, SIZE, SIZE);
 
-  /* Pause when tab is hidden (save CPU) */
+    ctx.save();
+    ctx.translate(SIZE / 2, SIZE / 2);
+
+    const t1 = clamp(mapRange(time, 0, CHANGE_EVENT_TIME + 0.25, 0, 1), 0, 1);
+    const t2 = clamp(mapRange(time, CHANGE_EVENT_TIME, 1, 0, 1), 0, 1);
+
+    ctx.rotate(-Math.PI * easePower(t2, 2.7));
+
+    drawTrail(t1);
+
+    ctx.fillStyle = 'white';
+    for (const star of stars) {
+      renderStar(star, t1);
+    }
+
+    drawStartDot();
+    ctx.restore();
+  }
+
+  /* ── Animation loop ───────────────────────────────────────── */
+  function loop(ts) {
+    if (lastTs === null) lastTs = ts;
+    const delta = ts - lastTs;
+    lastTs = ts;
+
+    time += delta / CYCLE_DURATION_MS;
+    if (time >= 1) time -= 1;
+
+    render();
+    rafId = requestAnimationFrame(loop);
+  }
+
+  /* ── Canvas sizing ────────────────────────────────────────── */
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const sect = canvas.parentElement;
+    W = sect ? sect.clientWidth  : window.innerWidth;
+    H = sect ? sect.clientHeight : window.innerHeight;
+    SIZE = Math.max(W, H);
+
+    canvas.width  = SIZE * dpr;
+    canvas.height = SIZE * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.scale(dpr, dpr);
+  }
+
+  /* ── Build star array with seeded RNG ─────────────────────── */
+  function buildStars() {
+    const rng = makeSeededRandom();
+    stars = [];
+    for (let i = 0; i < NUM_STARS; i++) {
+      const angle   = rng() * Math.PI * 2;
+      const dist    = 30 * rng() + 15;
+      const rotDir  = rng() > 0.5 ? 1 : -1;
+      const expRate = 1.2 + rng() * 0.8;
+      const finSc   = 0.7 + rng() * 0.6;
+      const sloc    = (1 - Math.pow(1 - rng(), 3.0)) / 1.3;
+      let   z       = lerp(0.5 * CAMERA_Z, CAMERA_TRAVEL + CAMERA_Z, rng());
+      z             = lerp(z, CAMERA_TRAVEL / 2, 0.3 * sloc);
+
+      stars.push({
+        angle,
+        distance:      dist,
+        rotDir,
+        expansionRate: expRate,
+        finalScale:    finSc,
+        dx:            dist * Math.cos(angle),
+        dy:            dist * Math.sin(angle),
+        spiralLocation: sloc,
+        z,
+        swFactor:      Math.pow(rng(), 2.0),
+      });
+    }
+  }
+
+  /* ── Init ─────────────────────────────────────────────────── */
+  resize();
+  buildStars();
+  rafId = requestAnimationFrame(loop);
+
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(rafId);
+    resize();
+    lastTs = null;
+    rafId  = requestAnimationFrame(loop);
+  });
+
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { cancelAnimationFrame(raf); }
-    else                 { draw(); }
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+    } else {
+      lastTs = null;
+      rafId  = requestAnimationFrame(loop);
+    }
   });
 })();
 
 
 /* ──────────────────────────────────────────────────────────────
-   2. TYPEWRITER (04_typewriter.txt)
-   Cycles through bio strings, typing then deleting each.
+   3. TYPEWRITER (04_typewriter.txt)
    ────────────────────────────────────────────────────────────── */
 (function initTypewriter() {
   const textEl = document.getElementById('typewriterText');
@@ -102,11 +362,9 @@
 
   function tick() {
     const cur = lines[lineIdx];
-
     if (!deleting) {
       charIdx++;
       textEl.textContent = cur.slice(0, charIdx);
-
       if (charIdx >= cur.length) {
         deleting = true;
         setTimeout(tick, 2400);
@@ -116,7 +374,6 @@
     } else {
       charIdx--;
       textEl.textContent = cur.slice(0, charIdx);
-
       if (charIdx <= 0) {
         charIdx  = 0;
         deleting = false;
@@ -128,15 +385,12 @@
     }
   }
 
-  /* Small delay so page settles before typing starts */
   setTimeout(tick, 1100);
 })();
 
 
 /* ──────────────────────────────────────────────────────────────
-   3. TEXT SCRAMBLE (03_text_scrable.txt)
-   Hover effect that randomises characters then resolves to text.
-   Applied to profile name and footer handle.
+   4. TEXT SCRAMBLE (03_text_scrable.txt)
    ────────────────────────────────────────────────────────────── */
 const SCRAMBLE_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#!*+~';
 
@@ -150,8 +404,8 @@ function attachScramble(el) {
 
   function startScramble() {
     clearInterval(timerId);
-    let frame    = 0;
-    const total  = original.length * 3;
+    let frame   = 0;
+    const total = original.length * 3;
 
     timerId = setInterval(() => {
       frame++;
@@ -161,7 +415,6 @@ function attachScramble(el) {
 
       for (let i = 0; i < original.length; i++) {
         const ch = original[i];
-        /* Preserve spaces, dots, @, numbers unchanged */
         if (ch === ' ' || ch === '.' || ch === '@' || /\d/.test(ch)) {
           out += ch;
         } else if (i < revealed) {
@@ -172,7 +425,6 @@ function attachScramble(el) {
       }
 
       el.textContent = out;
-
       if (frame >= total) {
         clearInterval(timerId);
         el.textContent = original;
@@ -191,8 +443,7 @@ attachScramble(document.getElementById('footerEl'));
 
 
 /* ──────────────────────────────────────────────────────────────
-   4. LOCATION TAG — hover to reveal (06_hover_to_reveal.txt)
-   Shows "Tokyo, Japan" — hover reveals live JST clock.
+   5. LOCATION TAG — hover to reveal JST (06_hover_to_reveal.txt)
    ────────────────────────────────────────────────────────────── */
 (function initLocationTag() {
   const btn     = document.getElementById('locTag');
@@ -205,9 +456,7 @@ attachScramble(document.getElementById('footerEl'));
   const getJST = () =>
     new Date().toLocaleTimeString('en-GB', {
       timeZone: 'Asia/Tokyo',
-      hour:     '2-digit',
-      minute:   '2-digit',
-      second:   '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
     }) + ' JST';
 
   function activate() {
@@ -222,7 +471,6 @@ attachScramble(document.getElementById('footerEl'));
 
   btn.addEventListener('mouseenter', () => { active = true;  activate();   });
   btn.addEventListener('mouseleave', () => { active = false; deactivate(); });
-
   btn.addEventListener('touchend', (e) => {
     e.preventDefault();
     active = !active;
@@ -232,14 +480,13 @@ attachScramble(document.getElementById('footerEl'));
 
 
 /* ──────────────────────────────────────────────────────────────
-   5. SAKURA PETALS — decorative falling animation
+   6. SAKURA PETALS
    ────────────────────────────────────────────────────────────── */
 (function initSakura() {
   const layer = document.getElementById('sakura');
   if (!layer) return;
 
-  const isMobile = window.innerWidth < 600;
-  const COUNT    = isMobile ? 8 : 15;
+  const COUNT = window.innerWidth < 600 ? 8 : 15;
 
   for (let i = 0; i < COUNT; i++) {
     const p    = document.createElement('div');
@@ -270,12 +517,12 @@ attachScramble(document.getElementById('footerEl'));
 
 
 /* ──────────────────────────────────────────────────────────────
-   6. AGE VERIFICATION
+   7. AGE VERIFICATION
    ────────────────────────────────────────────────────────────── */
 function showAgeVerification() {
   const modal = document.getElementById('ageModal');
   if (!modal) return;
-  modal.style.display    = 'flex';
+  modal.style.display          = 'flex';
   document.body.style.overflow = 'hidden';
   _track('age_gate_shown');
 }
@@ -301,7 +548,7 @@ function closeDeeplinkModal() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   7. INSTAGRAM / FACEBOOK IN-APP BROWSER DEEPLINK DETECTION
+   8. INSTAGRAM / FACEBOOK IN-APP BROWSER DEEPLINK DETECTION
    ────────────────────────────────────────────────────────────── */
 (function detectInApp() {
   const ua   = navigator.userAgent || '';
@@ -339,7 +586,7 @@ function closeDeeplinkModal() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   8. ANALYTICS HELPERS
+   9. ANALYTICS HELPERS
    ────────────────────────────────────────────────────────────── */
 function _track(name, data) {
   if (typeof gtag !== 'undefined') gtag('event', name, data || {});
@@ -380,7 +627,7 @@ function _notify(msg) {
 
 
 /* ──────────────────────────────────────────────────────────────
-   9. PAGE TRACKING
+   10. PAGE TRACKING
    ────────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   _track('page_view', {
@@ -396,7 +643,7 @@ window.addEventListener('beforeunload', () => {
 
 
 /* ──────────────────────────────────────────────────────────────
-   10. PROTECTION
+   11. IMAGE PROTECTION
    ────────────────────────────────────────────────────────────── */
 document.addEventListener('contextmenu', e => {
   if (e.target.tagName === 'IMG') e.preventDefault();
