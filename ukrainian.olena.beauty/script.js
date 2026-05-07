@@ -39,16 +39,14 @@ const CONFIG = {
   const cards = Array.from(fan.querySelectorAll('.fan-card'));
 
   const layout = [
-    { x: -360, rot: -10,  z: 100 },
-    { x: -280, rot: -7.5, z: 90  },
-    { x: -200, rot: -5,   z: 80  },
-    { x: -120, rot: -2.5, z: 70  },
-    { x:  -40, rot: -0.5, z: 60  },
-    { x:   40, rot:  0.5, z: 50  },
-    { x:  120, rot:  2.5, z: 40  },
-    { x:  200, rot:  5,   z: 30  },
-    { x:  280, rot:  7.5, z: 20  },
-    { x:  360, rot:  10,  z: 10  },
+    { x: -300, rot: -8,   z: 80 },
+    { x: -215, rot: -5.5, z: 70 },
+    { x: -130, rot: -3,   z: 60 },
+    { x:  -45, rot: -1,   z: 50 },
+    { x:   45, rot:  1,   z: 40 },
+    { x:  130, rot:  3,   z: 30 },
+    { x:  215, rot:  5.5, z: 20 },
+    { x:  300, rot:  8,   z: 10 },
   ];
 
   cards.forEach((card, i) => { card.style.zIndex = layout[i].z; });
